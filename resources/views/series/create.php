@@ -11,15 +11,16 @@
 <body>
     <div class="container">
         <div class="jumbotron">
-            <h1>Séries</h1>
+            <h1>Adicionar Série</h1>
         </div>
 
-        <a href="/series/criar" class="btn btn-dark mb-2">Adicionar</a>
-        <ul class="list-group">
-            <?php foreach ($series as $serie): ?>
-                <li class="list-group-item"><?=$serie;?></li>
-            <?php endforeach;?>
-        </ul>
+        <form method="post">
+            <div class="form-group">
+                <label for="nome">Nome:</label>
+                <input type="text" class="form-control" placeholder="Nome da serie" name="nome" id="nome">
+            </div>
+            <button class="btn btn-primary mt-2">Cadastrar</button>
+        </form>
     </div>
 </body>
 </html>
