@@ -7,13 +7,14 @@ Séries
 
 @section('conteudo')
 
-@if($status == 1)
-<div class="alert alert-success mt-2 mb-2" role="alert">
-  Série adicionada com sucesso.
+@if(!empty($mensagem))
+<div class="alert alert-success" role="alert">
+  {{$mensagem}}
 </div>
-@elseif($status == 0)
-<div class="alert alert-danger mt-2 mb-2" role="alert">
-  Falha ao inserir nova série.
+@endif
+@if(!empty($mensagemErro))
+<div class="alert alert-danger" role="alert">
+  {{$mensagemErro}}
 </div>
 @endif
 
@@ -21,7 +22,13 @@ Séries
 
 <ul class="list-group">
     @foreach($series as $serie)
-        <li class="list-group-item" style="text-transform:capitalize;">{{ $serie->nome }}</li>
+      <form method="post" action="/series/remover/{{$serie->id}}">
+        @csrf
+        @method('DELETE')
+        <li class="list-group-item" style="text-transform:capitalize;">{{ $serie->nome }}
+          <button class="btn btn-danger">Excluir</button>   
+        </li>   
+      </form>
     @endforeach
 </ul>
 @endsection
