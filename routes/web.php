@@ -1,6 +1,6 @@
 <?php
 
-Route::get('/series', 'SeriesController@index');
-Route::get('/series/criar', 'SeriesController@create');
-Route::post('/series/criar', 'SeriesController@store');
-Route::delete('/series/remover/{id}', 'SeriesController@delete');
+Route::get('/series', 'SeriesController@index')->name('listar_series');
+Route::get('/series/criar', 'SeriesController@create')->name('form_criar_serie');
+Route::post('/series/criar', 'SeriesController@store')->name('form_criar_serie');
+Route::delete('/series/remover/{id}', 'SeriesController@destroy')->name('form_exclui_serie');

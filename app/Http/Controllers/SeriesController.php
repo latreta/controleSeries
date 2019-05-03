@@ -55,10 +55,11 @@ class SeriesController extends Controller
             );
         }
 
-        return redirect('/series');
+        return redirect()->route('listar_series');
+
     }
 
-    public function delete(Request $request){
+    public function destroy(Request $request){
         $serie_id = $request->id;
 
         if(!is_null($serie_id)){
@@ -72,7 +73,7 @@ class SeriesController extends Controller
             }
         }
 
-        return redirect('/series');
+        return redirect()->route('listar_series');
 
     }
 }
