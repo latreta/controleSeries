@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Serie;
 use App\Http\Requests\SeriesFormRequest;
-use Illuminate\Http\Request; 
+use Illuminate\Http\Request;
+use App\Services\CriadorDeSerie;
 
 class SeriesController extends Controller {
     const MENSAGEM = 'mensagem'; 
@@ -23,42 +24,34 @@ class SeriesController extends Controller {
         $mensagemErro = $request->session()->get(self::MENSAGEM_ERRO);
         return compact('mensagem', 'mensagemErro');
     }
-
     
     public function create() {
         return view('series.create');
     }
 
-    public function store(SeriesFormRequest $request) {
-        $nome = $request->nome;
-        
-        $serie = Serie::create(
-                [
-                    'nome' =>$nome
-                ]
-            );
-            
-            $status = $serie->save();
-            $request->session()->flash(
-                self::MENSAGEM,
-                "Série {$serie->nome} criada com sucesso."
-            );
+    public function store(SeriesFormRequest $request, CriadorDeSerie $criadorDeSerie) {        
+
+        $serie = $criadorDeSerie->criarSerie(
+            $request->nome, 
+            $request->qtd_temporadas, 
+            $request->ep_temporada
+        );
+
+        $request->session()->flash(
+            self::MENSAGEM,
+            "Série {$serie->nome} criada com sucesso."
+        );
             
         return redirect()->route('listar_series');
     }
     
-    public function destroy(Request $request) {
-        $serie_id = $request->id;
+    public function destroy(Request $request, CriadorDeSerie $criadorDeSerie) {
+        $serie = Serie::find($request->id);
+        $criadorDeSerie->deletaSerie($serie);
         
-        if ( ! is_null($serie_id)) {
-            $status = Serie::destroy($serie_id);
-            if ($status) {
-                $request->session()->flash(self::MENSAGEM, "Série removida com sucesso.");
-            }
-            else {
-                $request->session()->flash(self::MENSAGEM_ERRO, "Falha ao realizar operação.");
-            }
-        }
+        $request->session()
+        ->flash(self::MENSAGEM,"Série removida com sucesso.");
+        
         return redirect()->route('listar_series');
     }
 }

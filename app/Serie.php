@@ -6,12 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Serie extends Model
 {
-    /*
-        protected $table = 'series'; 
-        O Laravel torna minúsculo e em plural o nome do model
-    */
-
+    public $timestamps = true;  // Grava ou nao informacoes de datas
     protected $fillable = ['nome'];
 
-    public $timestamps = true;  // Grava ou nao informacoes de datas
+    public function temporadas()
+    {
+        return $this->hasMany(Temporada::class);
+    }
 }
