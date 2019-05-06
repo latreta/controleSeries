@@ -31,7 +31,7 @@ class SeriesController extends Controller {
 
     public function store(SeriesFormRequest $request, SeriesService $seriesService) {
         
-        $seriesService->criarSerie(
+        $serie = $seriesService->criarSerie(
             $request->nome, 
             $request->qtd_temporadas, 
             $request->ep_temporada
@@ -39,16 +39,17 @@ class SeriesController extends Controller {
 
         $request->session()->flash(
             self::MENSAGEM,
-            "Série {$request->nome} criada com sucesso."
+            "Série {$serie->nome} criada com sucesso."
         );
             
         return redirect()->route('listar_series');
     }
     
     public function destroy(Request $request, SeriesService $seriesService) {
-        $seriesService->deletaSerie($request->id);
+        $nomeSerie = $seriesService->deletaSerie($request->id);
+
         $request->session()
-            ->flash(self::MENSAGEM,"Série removida com sucesso.");
+            ->flash(self::MENSAGEM,"Série {$nomeSerie} removida com sucesso.");
 
         return redirect()->route('listar_series');
     }

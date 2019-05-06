@@ -6,16 +6,16 @@ use App\Serie;
 use App\Temporada;
 use App\Episodio;
 use DB;
-use phpDocumentor\Reflection\Types\Nullable;
 
 class SeriesService
 {
-    public function criarSerie(string $nomeSerie, int $qtdTemporadas, int $epiPorTemporadas){
+    public function criarSerie(string $nomeSerie, int $qtdTemporadas, int $epiPorTemporadas): Serie{
 
-        DB::transaction(function() use ($nomeSerie, $qtdTemporadas, $epiPorTemporadas){
-            $serie = Serie::create(['nome' => $nomeSerie]);
-            $this->criaTemporadas($serie, $qtdTemporadas, $epiPorTemporadas);
-        });
+        DB::beginTransaction();
+        $serie = Serie::create(['nome' => $nomeSerie]);
+        $this->criaTemporadas($serie, $qtdTemporadas, $epiPorTemporadas);
+        DB::commit();
+        return $serie;
     }
 
     private function criaTemporadas(Serie &$serie, int $qtdTemporadas, int $episodiosPorTemporadas){
@@ -31,21 +31,28 @@ class SeriesService
         }
     }
 
-    public function deletaSerie(int $serieID): void{
-        DB::transaction(function() use ($serieID) {
+    public function deletaSerie(int $serieID): string{
+        $nomeSerie = '';
+        DB::transaction(function() use ($serieID, &$nomeSerie) {
             $serie = Serie::find($serieID);
-            $serie->temporadas->each(
-                function(Temporada $temporada)
-                {
-                    $this->removeEpisodios($temporada);                
-                    $temporada->delete();
-                }
-            );
+            $nomeSerie = $serie->nome;
+
+            $this->removerTemporadas($serie);
             $serie->delete();
+        });
+
+        return $nomeSerie;
+    }
+
+
+    private function removerTemporadas(Serie $serie): void {
+        $serie->temporadas->each(function (Temporada $temporada){
+            $this->removerEpisodios($temporada);
+            $temporada->delete();
         });
     }
 
-    private function removeEpisodios(Temporada $temporada): void{
+    private function removerEpisodios(Temporada $temporada): void{
         $temporada->episodios->each(
             function(Episodio $episodio){
                 $episodio->delete();
