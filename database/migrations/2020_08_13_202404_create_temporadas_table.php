@@ -15,12 +15,10 @@ class CreateTemporadasTable extends Migration
     {
         Schema::create('temporadas', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('serie_id');
+            $table->unsignedBigInteger('serie_id');
             $table->integer('numero');
             // Chave estrangeira
-            $table->foreign('serie_id')
-            ->references('id')
-            ->on('series');
+            $table->foreign('serie_id')->references('id')->on('seriados');
         });
     }
 
