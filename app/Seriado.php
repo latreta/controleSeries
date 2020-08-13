@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Serie extends Model
+class Seriado extends Model
 {
     protected $table = 'seriados';
     public $timestamps = true;  // Grava ou nao informacoes de datas

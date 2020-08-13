@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('cabecalho')
-Séries
+Seriados
 @endsection
 
 
@@ -18,16 +18,16 @@ Séries
 </div>
 @endif
 
-<a href="{{ route('form_criar_serie') }}" class="btn btn-dark mb-2">Adicionar</a>
+<a href="{{ route('form_criar_Seriado') }}" class="btn btn-dark mb-2">Adicionar</a>
 
 <ul class="list-group">
-  @foreach($series as $serie)
-  <li class="list-group-item d-flex align-items-center justify-content-between" style="text-transform:capitalize;">{{ $serie->nome }}
+  @foreach($Seriados as $seriado)
+  <li class="list-group-item d-flex align-items-center justify-content-between" style="text-transform:capitalize;">{{ $seriado->nome }}
     <span class="d-flex">
-      <a href="/series/{{$serie->id}}/temporadas" class="btn btn-info btn-sm">
+      <a href="/seriados/{{$seriado->id}}/temporadas" class="btn btn-info btn-sm">
       <i class="fas fa-external-link-alt"></i>
     </a>    
-    <form method="post" action="/series/remover/{{$serie->id}}" 
+    <form method="post" action="/Seriados/remover/{{$seriado->id}}" 
       onsubmit="return confirm('Tem certeza que deseja remover\?');">
       @csrf
       @method('DELETE')

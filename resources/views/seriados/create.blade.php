@@ -22,7 +22,7 @@ Adicionar Série
     <div class="row">
         <div class="col col-8">
             <label for="nome">Nome:</label>
-            <input type="text" class="form-control" placeholder="Nome da serie" name="nome" id="nome">
+            <input type="text" class="form-control" placeholder="Nome da Seriado" name="nome" id="nome">
         </div>
         <div class="col col-2">
             <label for="qtd_temporadas">N temporadas:</label>

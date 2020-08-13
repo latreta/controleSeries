@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers; 
 
-use App\Serie;
-use App\Http\Requests\SeriesFormRequest;
+use App\Seriado;
+use App\Http\Requests\SeriadosFormRequest;
 use Illuminate\Http\Request;
-use App\Services\SeriesService;
+use App\Services\SeriadosService;
 
-class SeriesController extends Controller {
+class SeriadosController extends Controller {
     const MENSAGEM = 'mensagem'; 
     const MENSAGEM_ERRO = 'mensagemErro';
     
     public function index(Request $request) {
-        $series = Serie::query()->orderBy('nome')->get();
+        $Seriados = Seriado::query()->orderBy('nome')->get();
         $mensagens = $this->recuperaMensagens($request);
         $mensagem = $mensagens[self::MENSAGEM];
         $mensagemErro = $mensagens[self::MENSAGEM_ERRO];
-        return view('series.index', compact('series', 'mensagem', 'mensagemErro'));
+        return view('Seriados.index', compact('Seriados', 'mensagem', 'mensagemErro'));
     }
     
     private function recuperaMensagens(Request $request) {
@@ -26,12 +26,12 @@ class SeriesController extends Controller {
     }
     
     public function create() {
-        return view('series.create');
+        return view('Seriados.create');
     }
 
-    public function store(SeriesFormRequest $request, SeriesService $seriesService) {
+    public function store(SeriadosFormRequest $request, SeriadosService $SeriadosService) {
         
-        $serie = $seriesService->criarSerie(
+        $Seriado = $SeriadosService->criarSeriado(
             $request->nome, 
             $request->qtd_temporadas, 
             $request->ep_temporada
@@ -39,18 +39,18 @@ class SeriesController extends Controller {
 
         $request->session()->flash(
             self::MENSAGEM,
-            "Série {$serie->nome} criada com sucesso."
+            "Série {$Seriado->nome} criada com sucesso."
         );
             
-        return redirect()->route('listar_series');
+        return redirect()->route('listar_Seriados');
     }
     
-    public function destroy(Request $request, SeriesService $seriesService) {
-        $nomeSerie = $seriesService->deletaSerie($request->id);
+    public function destroy(Request $request, SeriadosService $SeriadosService) {
+        $nomeSeriado = $SeriadosService->deletaSeriado($request->id);
 
         $request->session()
-            ->flash(self::MENSAGEM,"Série {$nomeSerie} removida com sucesso.");
+            ->flash(self::MENSAGEM,"Série {$nomeSeriado} removida com sucesso.");
 
-        return redirect()->route('listar_series');
+        return redirect()->route('listar_Seriados');
     }
 }
