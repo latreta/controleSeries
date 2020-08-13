@@ -27,7 +27,7 @@ Seriados
       <a href="/seriados/{{$seriado->id}}/temporadas" class="btn btn-info btn-sm">
       <i class="fas fa-external-link-alt"></i>
     </a>    
-    <form method="post" action="/Seriados/remover/{{$seriado->id}}" 
+    <form method="get" action="/seriados/remover/{{$seriado->id}}" 
       onsubmit="return confirm('Tem certeza que deseja remover\?');">
       @csrf
       @method('DELETE')
