@@ -1,8 +1,5 @@
 <?php
 
-Route::get('/', function () {
-    return redirect('/seriados');
-});
 Route::get('/seriados', 'SeriadosController@index')->name('listar_Seriados');
 Route::get('/seriados/criar', 'SeriadosController@create')->name('form_criar_Seriado');
 Route::post('/seriados/criar', 'SeriadosController@store')->name('form_criar_Seriado');
